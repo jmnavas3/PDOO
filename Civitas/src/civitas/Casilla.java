@@ -10,25 +10,30 @@ package civitas;
  */
 public class Casilla {
     
-// *****  ATRIBUTOS CIVITAS *****
-    private TipoCasilla tipo; // calle|sorpresa|descanso
-    private String nombre;
-    private int numCasas, numHoteles;
+// *********************************************************************
+// **********************  ATRIBUTOS CASILLA ***************************
+// *********************************************************************
     
-    float FACTORALQUILERCALLE = 1.0f,
-          FACTORALQUILERCASA = 1.0f,
-          FACTORALQUILERHOTEL = 4.0f;
+    final float FACTORALQUILERCALLE = 1.0f,
+                FACTORALQUILERCASA = 1.0f,
+                FACTORALQUILERHOTEL = 4.0f;
+    
+    private String      nombre;
+    private TipoCasilla tipo;
+    private int         numCasas,
+                        numHoteles;
     
     private float precioCompra,
                   precioEdificar,
                   precioBaseAlquiler;
 
-    private String propietario;
-
-    // se añade static para que sea un atributo de clase
-    static private int MAX_CASAS = 2;
     
-//    Constructor para la casilla tipo CALLE
+    
+// *********************************************************************
+// **********************  CONSTRUCTORES CASILLA ***********************
+// *********************************************************************
+    
+    // Constructor para la casilla tipo CALLE
     public Casilla (
             TipoCasilla unTipo,
             String unNombre,
@@ -45,13 +50,14 @@ public class Casilla {
         this.numHoteles = 0;
     }
     
-    //se añade static para que sea un método de clase, si no, es de instancia
-    static void setMAX_CASAS(int nuevo){
-        MAX_CASAS = nuevo;
-    }
+    
+    
+    
+// *********************************************************************
+// *************************  MÉTODOS CLASE ****************************
+// *********************************************************************
     
     public String getNombre (){ return this.nombre; }
-    public String getPropietario (){ return this.propietario; }
     public float getPrecioCompra () { return this.precioCompra; }
     public float getEdificar () { return this.precioEdificar; }
     public float getPrecioBase () { return this.precioBaseAlquiler; }
