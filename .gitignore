@@ -1,0 +1,8 @@
+# netbeans generated directories
+Civitas/build/
+Civitas/nbproject/
+Civitas/test
+
+# netbeans generated files
+*.xml
+*.mf
