@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package civitas;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,9 +15,9 @@ public class Casilla {
 // **********************  ATRIBUTOS CASILLA ***************************
 // *********************************************************************
     
-    final float FACTORALQUILERCALLE = 1.0f,
-                FACTORALQUILERCASA = 1.0f,
-                FACTORALQUILERHOTEL = 4.0f;
+    private static final float FACTORALQUILERCALLE = 1.0f,
+                               FACTORALQUILERCASA = 1.0f,
+                               FACTORALQUILERHOTEL = 4.0f;
     
     private String      nombre;
     private TipoCasilla tipo;
@@ -33,22 +34,42 @@ public class Casilla {
 // **********************  CONSTRUCTORES CASILLA ***********************
 // *********************************************************************
     
-    // Constructor para la casilla tipo CALLE
+    // casilla tipo DESCANSO
     public Casilla (
-            TipoCasilla unTipo,
-            String unNombre,
-            float unPrecioCompra,
-            float unPrecioEdificar,
-            float unPrecioBaseAlquiler )
+            TipoCasilla tipo,
+            String      nombre )
     {
-        this.tipo = unTipo;
-        this.nombre = unNombre;
-        this.precioCompra = unPrecioCompra;
-        this.precioEdificar = unPrecioEdificar;
-        this.precioBaseAlquiler = unPrecioBaseAlquiler;
+        
+    }
+    
+    // casilla tipo CALLE
+    public Casilla (
+            TipoCasilla tipo,
+            String titulo,
+            float precioCompra,
+            float precioEdificar,
+            float precioBaseAlquiler )
+    {
+        this.tipo = tipo;
+        this.nombre = titulo;
+        this.precioCompra = precioCompra;
+        this.precioEdificar = precioEdificar;
+        this.precioBaseAlquiler = precioBaseAlquiler;
         this.numCasas = 0;
         this.numHoteles = 0;
     }
+    
+    // casilla tipo SORPRESA
+    public Casilla (
+            TipoCasilla   tipo,
+            String        nombre,
+            MazoSorpresas mazo)
+    {
+        
+    }
+    
+    
+    
     
     
     
@@ -57,14 +78,35 @@ public class Casilla {
 // *************************  MÉTODOS CLASE ****************************
 // *********************************************************************
     
-    public String getNombre (){ return this.nombre; }
-    public float getPrecioCompra () { return this.precioCompra; }
-    public float getEdificar () { return this.precioEdificar; }
-    public float getPrecioBase () { return this.precioBaseAlquiler; }
-    public float getNumCasas () { return this.numCasas; }
-    public float getNumHoteles () { return this.numHoteles; }
+    boolean comprar ( Jugador jugador ) {
+        throw new UnsupportedOperationException("No implementado");
+    }
     
-    public float getPrecioAlquilerCompleto () { 
+    boolean construirCasa ( Jugador jugador ) {
+        throw new UnsupportedOperationException("No implementado");
+    }
+    
+    boolean construirHotel ( Jugador jugador ) {
+        throw new UnsupportedOperationException("No implementado");
+    }
+
+    boolean derruirCasas ( int numero, Jugador jugador ) {
+        throw new UnsupportedOperationException("No implementado");
+    }
+
+    public boolean esEsteElPropietario ( Jugador jugador ) {
+        throw new UnsupportedOperationException("No implementado");
+    }
+        
+    float getNumCasas ( ) {
+        return this.numCasas;
+    }
+    
+    float getNumHoteles ( ) {
+        return this.numHoteles;
+    }
+    
+    float getPrecioAlquilerCompleto () { 
         float precioAlquilerCompleto;
         precioAlquilerCompleto = this.numHoteles * FACTORALQUILERHOTEL;
         precioAlquilerCompleto = precioAlquilerCompleto + FACTORALQUILERCALLE +this.numCasas;
@@ -72,22 +114,46 @@ public class Casilla {
         return precioAlquilerCompleto; 
     }
     
-    public boolean construirCasa (){
-        this.numCasas++;
-        return true;
+    float getPrecioCompra ( ) {
+        return this.precioCompra;
     }
     
-    public boolean construirHotel (){
-        this.numHoteles++;
-        return true;
+    float getEdificar ( ) {
+        return this.precioEdificar;
+    }
+    
+    void informe ( int iactual, ArrayList <Jugador> todos ) {
+        throw new UnsupportedOperationException("No implementado");
+    }
+    
+    private void init ( ) {
+        
+    }
+    
+    void recibeJugador ( int iactual, ArrayList <Jugador> todos) {
+        
+    }
+
+    private void recibeJugador_calle ( int iactual, ArrayList <Jugador> todos) {
+        
+    }
+    
+    private void recibeJugador_sorpresa ( int iactual, ArrayList <Jugador> todos) {
+        
+    }
+    
+    public boolean tienePropietario ( ) {
+        throw new UnsupportedOperationException("No implementado");
+    }
+    
+    public void tramitarAlquiler ( Jugador jugador ) {
+        throw new UnsupportedOperationException("No implementado");
     }
     
     @Override
     public String toString(){
-        return getNombre() + ".\nPrecios\n-Compra: "
-             + getPrecioCompra() + "\n-Edificar: "
+        return getPrecioCompra() + "\n-Edificar: "
              + getEdificar() + "\n-Alquiler Base: "
-             + getPrecioBase() + "\n\nCasas: "
              + getNumCasas() + "\tHoteles: " + getNumHoteles();
     }
     

@@ -15,14 +15,14 @@ public class Dado {
     private int ultimoResultado;
     private boolean debug; //si esta activo, las tiradas seran siempre 1
 //    SINGLETON: única instancia de la clase inicializada dentro
-    static final private Dado instance = new Dado();
+    private static final Dado instance = new Dado();
     
     private Dado () {
         ultimoResultado = 1; // por defect. a 1 para no hacer nada en tirar()
         debug = false;
     }
     
-    static Dado getInstance () {
+    public static Dado getInstance () {
         return instance;
     }
     
@@ -41,7 +41,7 @@ public class Dado {
         return random.nextInt(n);
     }
     
-    void setDebug ( boolean d ) {
+    public void setDebug ( boolean d ) {
         debug = d;
         Diario.getInstance().ocurreEvento("Estado dado: " + d);
     }
