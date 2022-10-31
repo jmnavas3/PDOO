@@ -6,3 +6,6 @@ Civitas/test/
 # netbeans generated files
 *.xml
 *.mf
+
+# class files
+.class
