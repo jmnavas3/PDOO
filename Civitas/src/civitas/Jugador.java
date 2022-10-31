@@ -3,25 +3,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package civitas;
-
+import java.lang.Float;
+import java.util.ArrayList;
 /**
  *
  * @author jmnavas
  */
 public class Jugador implements Comparable<Jugador> {
 // *********************************************************************
-// *************************  ATRIBUTOS DE CLASE ****************************
+// *************************  ATRIBUTOS DE CLASE ***********************
 // *********************************************************************
     
     protected static int CasasMax = 4;
     protected static int CasasPorHotel = 4;
-    private int          casillaActual;
     protected static int HotelesMax = 4;
-    private String       nombre;
     protected static float PasoPorSalida = 1000.0f;
+    private static float SaldoInicial = 7500.0f;
+
+    private int          casillaActual;
+    private String       nombre;
     private boolean      puedeComprar;
     private float        saldo;
-    private static float SaldoInicial = 7500.0f;
+
+    private ArrayList<Casilla> propiedades;
     
     
     
@@ -36,11 +40,15 @@ public class Jugador implements Comparable<Jugador> {
 
 
     int cantidadCasasHoteles ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        int casasHoteles = 0;
+        for(Casilla i: propiedades){
+            casasHoteles += i.getNumCasas() + i.getNumHoteles();
+        }
+        return casasHoteles;
     }
 
     public int compareTo ( Jugador otro ) {
-        throw new UnsupportedOperationException("No implementado");
+        return Float.compare(getSaldo(), otro.getSaldo());
     }
 
     boolean comprar ( Casilla titulo ) {
@@ -56,40 +64,43 @@ public class Jugador implements Comparable<Jugador> {
     }
 
     boolean enBancarrota ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        return (saldo < 0);
     }
 
     private boolean existeLaPropiedad ( int ip ) {
-        throw new UnsupportedOperationException("No implementado");
+        if (propiedades.size() > ip)
+            return true;
+        return false;
     }
 
     private static int getCasasMax ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        return CasasMax;
     }
 
     static int getCasasPorHotel ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        return CasasPorHotel;
     }
 
     int getCasillaActual ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        return casillaActual;
     }
 
     private static int getHotelesMax ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        return HotelesMax;
     }
 
     protected String getNombre ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        return nombre;
     }
 
     private static float getPremioPasoSalida ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        return PasoPorSalida;
     }
 
-    // revisar
-    protected Casilla getPropiedades ( ) {
-        throw new UnsupportedOperationException("No implementado");
+    protected ArrayList<Casilla> getPropiedades ( ) {
+        if (tieneAlgoQueGestionar())
+            return propiedades;
+        return null;
     }
 
     boolean getPuedeComprar ( ) {
@@ -103,57 +114,78 @@ public class Jugador implements Comparable<Jugador> {
 
     //constructores
     Jugador ( String nombre ) {
-
+        this.nombre = nombre;
+        propiedades = new ArrayList<Casilla>();
+        saldo = SaldoInicial;
     }
 
     protected Jugador ( Jugador otro ) {
-
+        this.nombre = otro.nombre;
+        this.propiedades = otro.propiedades;
+        this.saldo = otro.saldo;
     }
     //-----
 
     
     boolean modificarSaldo ( float cantidad ) {
-        throw new UnsupportedOperationException("No implementado");
+        saldo += cantidad;
+        Diario.getInstance().ocurreEvento("SALDO MODIFICADO: " + cantidad + ". TOTAL: " + saldo);
+        return true;
     }
 
     boolean moverACasilla ( int numCasilla ) {
-        throw new UnsupportedOperationException("No implementado");
+        casillaActual = numCasilla;
+        puedeComprar = false;
+        Diario.getInstance().ocurreEvento("Jugador " + nombre + " en casilla " + casillaActual);
+        return true;
     }
 
     boolean paga ( float cantidad ) {
-        throw new UnsupportedOperationException("No implementado");
+        return modificarSaldo( (-1*cantidad) );
     }
 
     boolean pagaAlquiler ( float cantidad ) {
-        throw new UnsupportedOperationException("No implementado");
+        return paga(cantidad);
     }
 
     boolean pasaPorSalida ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        recibe(getPremioPasoSalida());
+        Diario.getInstance().ocurreEvento("Jugador " + nombre + " pasa por salida");
+        return true;
     }
 
     boolean puedeComprarCasilla ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        puedeComprar = true;
+        return puedeComprar;
     }
 
     private boolean puedoEdificarCasa ( Casilla propiedad ) {
-        throw new UnsupportedOperationException("No implementado");
+        if(puedoGastar(propiedad.getPrecioEdificar()) && propiedad.getNumCasas() <= CasasMax)
+            return true;
+        return false;
     }
 
     private boolean puedoEdificarHotel ( Casilla propiedad ) {
-        throw new UnsupportedOperationException("No implementado");
+        if(puedoGastar(propiedad.getPrecioEdificar()) && propiedad.getNumHoteles() <= HotelesMax && 
+           propiedad.getNumCasas() <= CasasPorHotel)
+            return true;
+        return false;
     }
 
     private boolean puedoGastar ( float precio ) {
-        throw new UnsupportedOperationException("No implementado");
+        if(saldo < precio)
+            return false;
+        return true;
     }
 
     boolean recibe ( float cantidad ) {
-        throw new UnsupportedOperationException("No implementado");
+        return modificarSaldo(cantidad);
     }
 
     boolean tieneAlgoQueGestionar ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        if(propiedades.isEmpty())
+            return false;
+        return true;
     }
 
     @Override

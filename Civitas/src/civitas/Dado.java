@@ -11,13 +11,17 @@ import java.util.Random;
  * @author jmnavas
  */
 public class Dado {
-    private Random random = new Random();
+
+    private Random random;
     private int ultimoResultado;
     private boolean debug; //si esta activo, las tiradas seran siempre 1
-//    SINGLETON: única instancia de la clase inicializada dentro
     private static final Dado instance = new Dado();
     
+
+
+
     private Dado () {
+        random = new Random();
         ultimoResultado = 1; // por defect. a 1 para no hacer nada en tirar()
         debug = false;
     }
@@ -27,7 +31,7 @@ public class Dado {
     }
     
     
-//    random.nextInt(6) random entre 0 y 5, por eso le sumo 1
+    // random.nextInt(6) = [0-5]+1
     int tirar () {
         ultimoResultado = 1;
         if (!debug)
@@ -36,7 +40,7 @@ public class Dado {
         return ultimoResultado;
     }
 
-//    n jugadores, el primer jugador tiene indice 0
+    // n jugadores, el primer jugador tiene indice 0
     int quienEmpieza ( int n ) {
         return random.nextInt(n);
     }

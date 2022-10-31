@@ -28,6 +28,10 @@ public class Casilla {
                   precioEdificar,
                   precioBaseAlquiler;
 
+    // *** Atributos asociaciones
+    
+    private MazoSorpresas mazo;
+    private Jugador propietario;
     
     
 // *********************************************************************
@@ -39,7 +43,9 @@ public class Casilla {
             TipoCasilla tipo,
             String      nombre )
     {
-        
+        init();
+        this.tipo = tipo;
+        this.nombre = nombre;
     }
     
     // casilla tipo CALLE
@@ -50,13 +56,12 @@ public class Casilla {
             float precioEdificar,
             float precioBaseAlquiler )
     {
+        init();
         this.tipo = tipo;
         this.nombre = titulo;
         this.precioCompra = precioCompra;
         this.precioEdificar = precioEdificar;
         this.precioBaseAlquiler = precioBaseAlquiler;
-        this.numCasas = 0;
-        this.numHoteles = 0;
     }
     
     // casilla tipo SORPRESA
@@ -65,11 +70,11 @@ public class Casilla {
             String        nombre,
             MazoSorpresas mazo)
     {
-        
+        init();
+        this.tipo = tipo;
+        this.nombre = nombre;
+        this.mazo = mazo;
     }
-    
-    
-    
     
     
     
@@ -90,12 +95,23 @@ public class Casilla {
         throw new UnsupportedOperationException("No implementado");
     }
 
+    public int cantidadCasasHoteles ( ) {
+        return numCasas+numHoteles;
+    }
+
     boolean derruirCasas ( int numero, Jugador jugador ) {
-        throw new UnsupportedOperationException("No implementado");
+        if(esEsteElPropietario(jugador) && numCasas <= numero){
+            numCasas -= numero;
+            return true;
+        }
+        return false;
     }
 
     public boolean esEsteElPropietario ( Jugador jugador ) {
-        throw new UnsupportedOperationException("No implementado");
+        if (propietario.compareTo(jugador) == 0)
+            return true;
+        else
+            return false;
     }
         
     float getNumCasas ( ) {
@@ -109,8 +125,9 @@ public class Casilla {
     float getPrecioAlquilerCompleto () { 
         float precioAlquilerCompleto;
         precioAlquilerCompleto = this.numHoteles * FACTORALQUILERHOTEL;
-        precioAlquilerCompleto = precioAlquilerCompleto + FACTORALQUILERCALLE +this.numCasas;
-        precioAlquilerCompleto = precioAlquilerCompleto * this.precioBaseAlquiler;
+        precioAlquilerCompleto += this.numCasas * FACTORALQUILERCASA;
+        precioAlquilerCompleto += FACTORALQUILERCALLE;
+        precioAlquilerCompleto *= this.precioBaseAlquiler;
         return precioAlquilerCompleto; 
     }
     
@@ -118,43 +135,74 @@ public class Casilla {
         return this.precioCompra;
     }
     
-    float getEdificar ( ) {
+    float getPrecioEdificar ( ) {
         return this.precioEdificar;
     }
     
-    void informe ( int iactual, ArrayList <Jugador> todos ) {
-        throw new UnsupportedOperationException("No implementado");
+    void informe ( int actual, ArrayList <Jugador> todos ) {
+        String nombreJ = todos.get(actual).getNombre();
+        Diario.getInstance().ocurreEvento("Jugador " + nombreJ + " cae en " + toString());
     }
     
     private void init ( ) {
-        
+        this.numCasas = 0;
+        this.numHoteles = 0;
+        this.precioBaseAlquiler = 0.0f;
+        this.precioCompra = 0.0f;
+        this.precioEdificar = 0.0f;
     }
     
     void recibeJugador ( int iactual, ArrayList <Jugador> todos) {
-        
+        throw new UnsupportedOperationException("No implementado");
     }
 
     private void recibeJugador_calle ( int iactual, ArrayList <Jugador> todos) {
-        
+        throw new UnsupportedOperationException("No implementado");
     }
     
     private void recibeJugador_sorpresa ( int iactual, ArrayList <Jugador> todos) {
-        
+        throw new UnsupportedOperationException("No implementado");
     }
     
     public boolean tienePropietario ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        if (propietario == null)
+            return false;
+        else
+            return true;
     }
     
     public void tramitarAlquiler ( Jugador jugador ) {
-        throw new UnsupportedOperationException("No implementado");
+        if (tienePropietario() && !esEsteElPropietario(jugador)){
+            jugador.pagaAlquiler(getPrecioAlquilerCompleto());
+            propietario.recibe(getPrecioAlquilerCompleto());
+        }
     }
     
     @Override
     public String toString(){
-        return getPrecioCompra() + "\n-Edificar: "
-             + getEdificar() + "\n-Alquiler Base: "
-             + getNumCasas() + "\tHoteles: " + getNumHoteles();
+        String salida = "CASILLA " + nombre + " es de tipo " + tipo.toString();
+
+        if ( tipo == TipoCasilla.CALLE ) {
+            salida += "\nPRECIOS: \nCompra=" + precioCompra + " Alquiler=" + getPrecioAlquilerCompleto() + " Edificar=" + precioEdificar;
+            
+            if (tienePropietario()) {
+                salida += "\nPERTENECE A " + propietario.getNombre();
+                if(numCasas > 0) salida += "\nNº CASAS= " + numCasas;
+                if(numHoteles > 0) salida += "\nNº HOTELES= " + numHoteles;
+            }
+        }
+
+        
+        return salida;
     }
     
+    /* // RUN FILE
+    public static void main (String[] args) {
+        Casilla nueva = new Casilla(TipoCasilla.DESCANSO, "SALIDA");
+        Casilla calle = new Casilla(TipoCasilla.CALLE, "plaza lavapies", 10.0f, 20.0f, 15.0f);
+        
+        System.out.println(nueva);
+        System.out.println(calle);
+    }
+    */
 }

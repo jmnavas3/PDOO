@@ -11,30 +11,40 @@ import java.util.ArrayList;
 public class Sorpresa {
     private String texto;
     private int    valor;
+    private MazoSorpresas mazo;
+    private TipoSorpresa tipo;
     
     
     void aplicarAJugador ( int actual, ArrayList <Jugador> todos ) {
-        
+        if ( tipo == TipoSorpresa.PAGARCOBRAR )
+            aplicarAJugador_pagarCobrar(actual, todos);
+        else if ( tipo == TipoSorpresa.PORCASAHOTEL)
+            aplicarAJugador_porCasaHotel(actual, todos);
     }
     
     private void aplicarAJugador_pagarCobrar ( int actual, ArrayList <Jugador> todos ) {
-        
+        informe(actual, todos);
+        todos.get(actual).modificarSaldo(valor);
     }
     
     private void aplicarAJugador_porCasaHotel ( int actual, ArrayList <Jugador> todos ) {
-        
+        informe(actual, todos);
+        int casasHoteles = todos.get(actual).cantidadCasasHoteles();
+        todos.get(actual).modificarSaldo(valor*casasHoteles);
     }
     
     private void informe ( int actual, ArrayList <Jugador> todos ) {
-        
+        Diario.getInstance().ocurreEvento("Aplicando sorpresa: " + texto + ". JUGADOR: " + todos.get(actual).getNombre());
     }
     
     Sorpresa ( TipoSorpresa tipo, String texto, int valor ) {
-        
+        this.tipo = tipo;
+        this.texto = texto;
+        this.valor = valor;
     }
     
     @Override
     public String toString ( ) {
-        return "\n Hola :3 ";
+        return texto;
     }
 }

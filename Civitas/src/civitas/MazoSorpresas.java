@@ -6,14 +6,13 @@ package civitas;
 import java.util.ArrayList;
 import java.util.Collections;
 /**
- * Atributos de instancia privados
  * @author jmnavas
  */
 public class MazoSorpresas {
-    private ArrayList<Sorpresa> sorpresas;
     private boolean barajada; //true: mazo barajado
-    private int usadas; //cartas usadas
     private boolean debug; //true: no se baraja el mazo
+    private int usadas; //cartas usadas
+    private ArrayList<Sorpresa> sorpresas;
     
 //    valores por defecto
     private void init () {
