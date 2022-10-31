@@ -31,6 +31,7 @@ public class Casilla {
     // *** Atributos asociaciones
     
     private MazoSorpresas mazo;
+    private Sorpresa sorpresa;
     private Jugador propietario;
     
     
@@ -153,15 +154,29 @@ public class Casilla {
     }
     
     void recibeJugador ( int iactual, ArrayList <Jugador> todos) {
-        throw new UnsupportedOperationException("No implementado");
+        if(tipo == TipoCasilla.CALLE)
+            recibeJugador_calle(iactual, todos);
+        else if (tipo == TipoCasilla.SORPRESA)
+            recibeJugador_sorpresa(iactual, todos);
+        else if (tipo == TipoCasilla.DESCANSO)
+            informe(iactual, todos);
     }
 
     private void recibeJugador_calle ( int iactual, ArrayList <Jugador> todos) {
-        throw new UnsupportedOperationException("No implementado");
+        informe(iactual, todos);
+        Jugador jugador = todos.get(iactual);
+
+        if (!tienePropietario())
+            jugador.puedeComprarCasilla();
+        else
+            tramitarAlquiler(jugador);
     }
     
     private void recibeJugador_sorpresa ( int iactual, ArrayList <Jugador> todos) {
-        throw new UnsupportedOperationException("No implementado");
+        sorpresa = mazo.siguiente();
+        informe(iactual, todos);
+        sorpresa.aplicarAJugador(iactual, todos);
+
     }
     
     public boolean tienePropietario ( ) {
