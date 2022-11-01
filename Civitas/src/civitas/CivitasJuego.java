@@ -15,7 +15,6 @@ public class CivitasJuego {
     private int indiceJugadorActual;
     private Tablero tablero;
     private ArrayList<Jugador> jugadores;
-    private GestorEstados gestor;
     private EstadosJuego estado;
     private MazoSorpresas mazo;
     
@@ -29,7 +28,7 @@ public class CivitasJuego {
             jugadores.add(new Jugador(nombres.get(i)));
         }
 
-        estado = gestor.estadoInicial();
+        estado = new GestorEstados().estadoInicial();
 
         Dado.getInstance().setDebug(debug);
 
@@ -45,17 +44,37 @@ public class CivitasJuego {
     
 
     private void avanzaJugador( ) {
-        throw new UnsupportedOperationException("No implementado");
+      Jugador jugadorActual = getJugadorActual();
+      int posicionActual = jugadorActual.getCasillaActual();
+      int tirada = Dado.getInstance().tirar();
+      int posicionNueva = tablero.nuevaPosicion(posicionActual, tirada);
+      Casilla casilla = tablero.getCasilla(posicionNueva);
+      contabilizarPasosPorSalida();
+      jugadorActual.moverACasilla(posicionNueva);
+      casilla.recibeJugador(indiceJugadorActual, jugadores);
     }
     
 
     public boolean comprar ( ) {
-        throw new UnsupportedOperationException("No implementado");
+      Jugador jugadorActual = getJugadorActual();
+      int numCasillaActual = jugadorActual.getCasillaActual();
+      Casilla casilla = tablero.getCasilla(numCasillaActual);
+      return jugadorActual.comprar(casilla);
     }
     
 
     public OperacionJuego siguientePaso ( ) {
-        throw new UnsupportedOperationException("No implementado");
+      Jugador jugadorActual = getJugadorActual();
+      OperacionJuego operacion = new GestorEstados().siguienteOperacion(jugadorActual,estado);
+
+      if (operacion == OperacionJuego.PASAR_TURNO){
+        pasarTurno();
+        siguientePasoCompletado(operacion);
+      } else if (operacion == OperacionJuego.AVANZAR) {
+        avanzaJugador();
+        siguientePasoCompletado(operacion);
+      }
+      return operacion;
     }
     
 
@@ -145,7 +164,7 @@ public class CivitasJuego {
     
     
     public void siguientePasoCompletado ( OperacionJuego operacion ) {
-        gestor.siguienteEstado(getJugadorActual(), estado, operacion);
+        new GestorEstados().siguienteEstado(getJugadorActual(), estado, operacion);
     }
     
 }
