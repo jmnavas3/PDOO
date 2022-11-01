@@ -85,15 +85,20 @@ public class Casilla {
 // *********************************************************************
     
     boolean comprar ( Jugador jugador ) {
-        throw new UnsupportedOperationException("No implementado");
+        propietario = jugador;
+        return jugador.paga(precioCompra);
     }
     
     boolean construirCasa ( Jugador jugador ) {
-        throw new UnsupportedOperationException("No implementado");
+        jugador.paga(precioEdificar);
+        numCasas++;
+        return true;
     }
     
     boolean construirHotel ( Jugador jugador ) {
-        throw new UnsupportedOperationException("No implementado");
+        jugador.paga(precioEdificar);
+        numHoteles++;
+        return true;
     }
 
     public int cantidadCasasHoteles ( ) {

@@ -52,15 +52,60 @@ public class Jugador implements Comparable<Jugador> {
     }
 
     boolean comprar ( Casilla titulo ) {
-        throw new UnsupportedOperationException("No implementado");
+        boolean result = false;
+
+        if(puedeComprar){
+            float precio = titulo.getPrecioCompra();
+
+            if (puedoGastar(precio)){
+                result = titulo.comprar(this);
+                propiedades.add(titulo);
+                Diario.getInstance().ocurreEvento("El jugador " + this + " compra la propiedad " + titulo);
+                puedeComprar = false;
+            }
+        } else {
+            Diario.getInstance().ocurreEvento("EL jugador "+this+" no tiene saldo para comprar la propiedad "+titulo);
+        }
+
+        return result;
     }
 
     boolean construirCasa ( int ip ) {
-        throw new UnsupportedOperationException("No implementado");
+        boolean result = false;
+        boolean existe = existeLaPropiedad(ip);
+        
+        if ( existe )
+        {
+            Casilla propiedad = propiedades.get(ip);
+            boolean puedoEdificar = puedoEdificarCasa(propiedad);
+
+            if (puedoEdificar){
+                result = propiedad.construirCasa(this);
+                Diario.getInstance().ocurreEvento("EL jugador "+this+" construye casas en la propiedad "+ip);
+            }
+        }
+        return result;
     }
 
     boolean construirHotel ( int ip ) {
-        throw new UnsupportedOperationException("No implementado");
+        boolean result = false;
+
+        if ( existeLaPropiedad(ip) )
+        {
+            Casilla propiedad = propiedades.get(ip);
+            boolean puedoEdificarHotel = puedoEdificarHotel(propiedad);
+
+            if (puedoEdificarHotel){
+                result = propiedad.construirHotel(this);
+                propiedad.derruirCasas(CasasPorHotel, this);
+                Diario.getInstance().ocurreEvento("El jugador "+this+" construye hotel en la propiedad "+ip);
+            }
+            
+
+        }
+
+
+        return result;
     }
 
     boolean enBancarrota ( ) {
@@ -160,14 +205,14 @@ public class Jugador implements Comparable<Jugador> {
     }
 
     private boolean puedoEdificarCasa ( Casilla propiedad ) {
-        if(puedoGastar(propiedad.getPrecioEdificar()) && propiedad.getNumCasas() <= CasasMax)
+        if(puedoGastar(propiedad.getPrecioEdificar()) && propiedad.getNumCasas() < getCasasMax())
             return true;
         return false;
     }
 
     private boolean puedoEdificarHotel ( Casilla propiedad ) {
-        if(puedoGastar(propiedad.getPrecioEdificar()) && propiedad.getNumHoteles() <= HotelesMax && 
-           propiedad.getNumCasas() <= CasasPorHotel)
+        if(puedoGastar(propiedad.getPrecioEdificar()) && propiedad.getNumHoteles() < getHotelesMax() && 
+           propiedad.getNumCasas() >= CasasPorHotel)
             return true;
         return false;
     }
@@ -190,7 +235,7 @@ public class Jugador implements Comparable<Jugador> {
 
     @Override
     public String toString( ) {
-        return "\nHola :3 ";
+        return nombre;
     }
 
     
