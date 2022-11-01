@@ -200,7 +200,7 @@ public class Casilla {
     
     @Override
     public String toString(){
-        String salida = "CASILLA " + nombre + " es de tipo " + tipo.toString();
+        String salida = "\nCASILLA " + nombre;
 
         if ( tipo == TipoCasilla.CALLE ) {
             salida += "\nPRECIOS: \nCompra=" + precioCompra + " Alquiler=" + getPrecioAlquilerCompleto() + " Edificar=" + precioEdificar;

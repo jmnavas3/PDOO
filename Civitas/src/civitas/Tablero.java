@@ -49,8 +49,8 @@ public class Tablero {
     }
     
     
-    public ArrayList <Casilla> getCasillas ( int numCasilla ) {
-        throw new UnsupportedOperationException("No implementado");
+    public ArrayList <Casilla> getCasillas ( ) {
+        return casillas;
     }
     
     

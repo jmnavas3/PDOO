@@ -157,7 +157,7 @@ public class CivitasJuego {
     }
     
     
-    private ArrayList <Jugador> ranking ( ) {
+    public ArrayList <Jugador> ranking ( ) {
 		Collections.sort(jugadores);
 		return jugadores;
 	}

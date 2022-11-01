@@ -126,7 +126,7 @@ public class Jugador implements Comparable<Jugador> {
         return CasasPorHotel;
     }
 
-    int getCasillaActual ( ) {
+    public int getCasillaActual ( ) {
         return casillaActual;
     }
 
@@ -142,18 +142,18 @@ public class Jugador implements Comparable<Jugador> {
         return PasoPorSalida;
     }
 
-    protected ArrayList<Casilla> getPropiedades ( ) {
+    public ArrayList<Casilla> getPropiedades ( ) {
         if (tieneAlgoQueGestionar())
             return propiedades;
         return null;
     }
 
     boolean getPuedeComprar ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        return puedeComprar;
     }
 
     protected float getSaldo ( ) {
-        throw new UnsupportedOperationException("No implementado");
+        return saldo;
     }
 
 
@@ -235,6 +235,16 @@ public class Jugador implements Comparable<Jugador> {
 
     @Override
     public String toString( ) {
+        String salida = nombre;
+        
+        if (tieneAlgoQueGestionar()) {
+            int j = 1;
+            salida += " tiene " + propiedades.size() + " propiedades:";
+            for (Casilla i: propiedades) {
+                salida += "\nPropiedad " + j++ + i;
+            }
+        }
+        
         return nombre;
     }
 
