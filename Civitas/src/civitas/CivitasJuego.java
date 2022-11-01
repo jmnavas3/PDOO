@@ -140,13 +140,12 @@ public class CivitasJuego {
     
     
     private void inicializaTablero ( MazoSorpresas mazo ) {
-		tablero.añadeCasilla(new Casilla(TipoCasilla.DESCANSO, "SALIDA"));
-		for (int i = 1; i < 20; i++){
-			if(i%4 == 0)
-				tablero.añadeCasilla(new Casilla(TipoCasilla.SORPRESA, "SORPRESA", mazo));
-			else
-				tablero.añadeCasilla(new Casilla(TipoCasilla.CALLE, "calle " + i, i*100.0f, i*50.0f, i*20.0f));
-		}
+        for (int i = 1; i < 20; i++){
+            if(i%4 == 0)
+                tablero.añadeCasilla(new Casilla(TipoCasilla.SORPRESA, "SORPRESA", mazo));
+            else
+                tablero.añadeCasilla(new Casilla(TipoCasilla.CALLE, "calle " + i, i*100.0f, i*50.0f, i*20.0f));
+        }
 
     }
     

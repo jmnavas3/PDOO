@@ -19,7 +19,7 @@ public class Tablero {
     
     public Tablero(){
         casillas = new ArrayList<>();
-        casillas.add(new Casilla(TipoCasilla.DESCANSO, "salida",50.0f,100.0f,80.0f));
+        casillas.add(new Casilla(TipoCasilla.DESCANSO, "SALIDA"));
         porSalida = false;
     }
     
